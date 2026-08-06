@@ -1,0 +1,112 @@
+/* トップページ（ツール一覧） */
+
+.home-header {
+  padding: 34px 4px 26px;
+}
+
+.home-header h1 {
+  font-family: var(--font-num);
+  font-size: clamp(34px, 11vw, 56px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+.home-header p {
+  margin: 14px 0 0;
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+.tool-list {
+  display: grid;
+  gap: 10px;
+}
+
+.tool-card {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  align-items: start;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+a.tool-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg-elev));
+}
+
+a.tool-card:active {
+  transform: scale(0.995);
+}
+
+.tool-card[data-status='planned'] {
+  opacity: 0.45;
+}
+
+.tool-card__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+}
+
+.tool-card__icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.tool-card__body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.tool-card__title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.tool-card__title small {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.tool-card__badge {
+  padding: 1px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 11px;
+  font-style: normal;
+  color: var(--text-faint);
+}
+
+.tool-card__desc {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-dim);
+}
+
+.home-footer {
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.home-footer p {
+  margin: 0;
+}

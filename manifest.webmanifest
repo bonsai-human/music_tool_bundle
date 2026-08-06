@@ -1,0 +1,26 @@
+{
+  "name": "music tool bundle",
+  "short_name": "music tools",
+  "description": "ちょっとした音楽系ツールをまとめたウェブアプリ。",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0b0d",
+  "theme_color": "#0b0b0d",
+  "icons": [
+    {
+      "src": "./assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "音叉",
+      "url": "./tools/tuning-fork/"
+    }
+  ]
+}

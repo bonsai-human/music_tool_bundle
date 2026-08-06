@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>music tool bundle</title>
+    <meta name="description" content="ちょっとした音楽系ツールをまとめたウェブアプリ。" />
+    <meta name="theme-color" content="#0b0b0d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./shared/css/base.css" />
+    <link rel="stylesheet" href="./home.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="home-header">
+        <h1>music&nbsp;tool<br />bundle</h1>
+        <p>ちょっとした音楽系のツール置き場。すべてブラウザだけで動きます。</p>
+      </header>
+
+      <nav class="tool-list" id="tool-list" aria-label="ツール一覧"></nav>
+
+      <footer class="home-footer">
+        <p>オフラインでも起動します。ホーム画面に追加しておくと便利です。</p>
+      </footer>
+    </main>
+
+    <script type="module">
+      import { TOOLS } from './shared/js/registry.js';
+      import { registerServiceWorker } from './shared/js/pwa.js';
+
+      const list = document.getElementById('tool-list');
+
+      list.replaceChildren(
+        ...TOOLS.map((tool) => {
+          const ready = tool.status === 'ready';
+          const node = document.createElement(ready ? 'a' : 'div');
+          node.className = 'tool-card';
+          node.style.setProperty('--accent', tool.accent);
+          node.dataset.status = tool.status;
+          if (ready) node.href = tool.path;
+
+          node.innerHTML = `
+            <span class="tool-card__icon">${tool.icon}</span>
+            <span class="tool-card__body">
+              <span class="tool-card__title">
+                ${tool.name}
+                <small>${tool.tagline}</small>
+                ${ready ? '' : '<em class="tool-card__badge">予定</em>'}
+              </span>
+              <span class="tool-card__desc">${tool.description}</span>
+            </span>`;
+          return node;
+        })
+      );
+
+      registerServiceWorker();
+    </script>
+  </body>
+</html>

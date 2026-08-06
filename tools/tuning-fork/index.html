@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>音叉 | music tool bundle</title>
+    <meta name="description" content="A1〜C7 の基準音を鳴らす電子音叉。A4 較正・波形・高調波量を調整できます。" />
+    <meta name="theme-color" content="#0b0b0d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="../../manifest.webmanifest" />
+    <link rel="stylesheet" href="../../shared/css/base.css" />
+    <link rel="stylesheet" href="./tuning-fork.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="icon-button" href="../../" aria-label="ツール一覧へ戻る">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 2 4 8l6 6" />
+          </svg>
+          ツール
+        </a>
+        <span class="topbar__spacer"></span>
+        <button class="icon-button" id="info-button" aria-label="使い方">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+               stroke-width="1.6" aria-hidden="true">
+            <circle cx="10" cy="10" r="8" />
+            <path d="M10 9v5" stroke-linecap="round" />
+            <circle cx="10" cy="6.2" r="0.9" fill="currentColor" stroke="none" />
+          </svg>
+        </button>
+      </header>
+
+      <p class="calibration-readout">
+        A4 = <span id="calibration-readout">440.0</span>Hz
+      </p>
+
+      <button class="stage" id="toggle" type="button" aria-pressed="false">
+        <span class="stage__note" id="note-name" aria-hidden="true">A4</span>
+
+        <span class="stage__fork" id="fork">
+          <svg viewBox="0 0 120 300" fill="none" stroke="currentColor" aria-hidden="true">
+            <g class="fork__prongs">
+              <path d="M32 16 V172 A28 28 0 0 0 88 172 V16" stroke-width="17"
+                    stroke-linecap="round" />
+            </g>
+            <path d="M60 200 V262" stroke-width="9" stroke-linecap="round" />
+            <circle cx="60" cy="272" r="9" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+
+        <span class="stage__freq"><span id="frequency">440.0</span><small>Hz</small></span>
+        <span class="visually-hidden" id="toggle-label">音を鳴らす</span>
+      </button>
+
+      <p class="hint" id="hint">音叉をタップすると鳴ります</p>
+
+      <section class="controls" aria-label="設定">
+        <div class="control">
+          <span class="control__label" id="label-note">音符</span>
+          <div class="control__body">
+            <div class="ticks" id="ticks-a"></div>
+            <input class="slider" id="note" type="range" min="33" max="96" step="1" value="69"
+                   aria-labelledby="label-note" aria-valuetext="A4 440.0Hz" />
+            <div class="ticks" id="ticks-c"></div>
+          </div>
+        </div>
+
+        <div class="control">
+          <span class="control__label" id="label-calibration">A4 較正</span>
+          <div class="control__body">
+            <input class="slider" id="calibration" type="range" min="415" max="466" step="0.5"
+                   value="440" aria-labelledby="label-calibration" aria-valuetext="440.0Hz" />
+            <div class="ticks" id="ticks-calibration"></div>
+          </div>
+        </div>
+
+        <div class="control">
+          <span class="control__label control__label--small" id="label-volume">音圧レベル</span>
+          <div class="control__body">
+            <input class="slider" id="volume" type="range" min="0" max="100" step="1" value="70"
+                   aria-labelledby="label-volume" />
+          </div>
+        </div>
+
+        <div class="control" id="harmonics-control">
+          <span class="control__label control__label--small" id="label-harmonics">高調波</span>
+          <div class="control__body">
+            <input class="slider" id="harmonics" type="range" min="0" max="100" step="1" value="35"
+                   aria-labelledby="label-harmonics" />
+          </div>
+        </div>
+      </section>
+
+      <div class="waveforms" id="waveforms" role="radiogroup" aria-label="波形"></div>
+    </main>
+
+    <dialog id="info-dialog">
+      <h2>使い方</h2>
+      <ul>
+        <li>中央の音叉をタップすると、選んだ音が鳴り続けます。もう一度タップで停止。</li>
+        <li><strong>音符</strong>：A1〜C7 を半音単位で選びます。</li>
+        <li><strong>A4 較正</strong>：基準ピッチを 415〜466Hz で変更します（バロックピッチや A=442 など）。</li>
+        <li><strong>高調波</strong>：0% で純粋な正弦波、100% で選んだ波形そのものになります。正弦波を選んでいるときは効きません。</li>
+        <li>キーボード：スライダーを選んで左右キーで微調整、音叉に <kbd>Space</kbd> で発音。</li>
+      </ul>
+      <h2>うまく鳴らないとき</h2>
+      <ul>
+        <li>iPhone / iPad はサイレントスイッチが有効だと音が出ません。</li>
+        <li>設定は自動で保存され、オフラインでも起動します。</li>
+      </ul>
+      <button class="icon-button" id="info-close" autofocus>閉じる</button>
+    </dialog>
+
+    <script type="module" src="./tuning-fork.js"></script>
+  </body>
+</html>

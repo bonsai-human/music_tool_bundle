@@ -1,0 +1,304 @@
+/* =========================================================================
+   music_tool_bundle 共通スタイル
+   デザイントークン + リセット + 画面シェル + フォームパーツ
+   ========================================================================= */
+
+:root {
+  --bg: #0b0b0d;
+  --bg-elev: #141418;
+  --panel: #17171c;
+  --line: #2a2a32;
+  --text: #f4f4f7;
+  --text-dim: #a0a0ac;
+  --text-faint: #6d6d78;
+  --accent: #3ddc6b;
+  --track: #3a3a44;
+  --thumb: #ffffff;
+  --danger: #ff5a5a;
+
+  --radius: 14px;
+  --thumb-size: 30px;
+  --shell-max: 640px;
+
+  --font: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', 'Segoe UI',
+    Roboto, sans-serif;
+  --font-num: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.6;
+  overscroll-behavior-y: contain;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* テクスチャ（元アプリの布目風背景の代わり）*/
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(120% 80% at 50% 0%, #1b1b21 0%, transparent 60%),
+    repeating-linear-gradient(45deg, #ffffff03 0 1px, transparent 1px 3px);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  margin: 0;
+  font-weight: 600;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* ---------- 画面シェル ---------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--shell-max);
+  margin: 0 auto;
+  padding: max(12px, env(safe-area-inset-top)) 16px
+    calc(24px + env(safe-area-inset-bottom));
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+}
+
+.topbar__title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+}
+
+.topbar__spacer {
+  flex: 1;
+}
+
+.icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.icon-button:hover {
+  color: var(--text);
+  border-color: #3d3d48;
+}
+
+.icon-button:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- スライダー ---------- */
+
+.control {
+  display: grid;
+  grid-template-columns: minmax(72px, auto) 1fr;
+  align-items: center;
+  column-gap: 14px;
+  padding: 6px 0;
+}
+
+.control--stacked {
+  grid-template-columns: 1fr;
+  row-gap: 2px;
+}
+
+.control__label {
+  font-size: clamp(15px, 4.2vw, 19px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--text);
+}
+
+.control__label--small {
+  font-size: clamp(13px, 3.6vw, 16px);
+  color: var(--text-dim);
+}
+
+.control__body {
+  min-width: 0;
+}
+
+.control[data-disabled='true'] {
+  opacity: 0.4;
+}
+
+.slider {
+  --fill: 50%;
+  width: 100%;
+  margin: 0;
+  height: var(--thumb-size);
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+
+.slider::-webkit-slider-runnable-track {
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0 var(--fill),
+    var(--track) var(--fill) 100%
+  );
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  margin-top: -9px;
+  border-radius: 999px;
+  background: var(--thumb);
+  box-shadow: 0 1px 4px #0008;
+}
+
+.slider::-moz-range-track {
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0 var(--fill),
+    var(--track) var(--fill) 100%
+  );
+}
+
+.slider::-moz-range-thumb {
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  border: none;
+  border-radius: 999px;
+  background: var(--thumb);
+  box-shadow: 0 1px 4px #0008;
+}
+
+.slider:disabled {
+  cursor: default;
+}
+
+/* 目盛り。--pos (0..1) を親から渡し、つまみ幅ぶんを差し引いて配置する */
+.ticks {
+  position: relative;
+  height: 18px;
+  font-family: var(--font-num);
+  font-size: clamp(11px, 3vw, 14px);
+  color: var(--text-dim);
+  user-select: none;
+}
+
+.ticks__item {
+  position: absolute;
+  top: 0;
+  left: calc(
+    var(--thumb-size) / 2 + var(--pos) * (100% - var(--thumb-size))
+  );
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* ---------- ダイアログ ---------- */
+
+dialog {
+  width: min(440px, calc(100vw - 32px));
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--text);
+}
+
+dialog::backdrop {
+  background: #000000b8;
+}
+
+dialog h2 {
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+dialog p,
+dialog li {
+  font-size: 14px;
+  color: var(--text-dim);
+}
+
+dialog ul {
+  margin: 0 0 14px;
+  padding-left: 1.2em;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
