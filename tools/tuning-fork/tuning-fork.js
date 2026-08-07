@@ -172,7 +172,6 @@ function buildWaveforms() {
       button.className = 'waveform';
       button.setAttribute('role', 'radio');
       button.dataset.waveform = wave.id;
-      button.style.setProperty('--wave-color', wave.color);
       button.innerHTML = `
         <svg viewBox="0 0 44 24" fill="none" stroke="currentColor" stroke-width="2.2"
              stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

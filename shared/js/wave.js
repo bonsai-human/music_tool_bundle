@@ -6,10 +6,10 @@
  */
 
 export const WAVEFORMS = [
-  { id: 'sine', label: '正弦波', color: '#9aa6ff' },
-  { id: 'triangle', label: '三角波', color: '#ffe14d' },
-  { id: 'sawtooth', label: 'のこぎり波', color: '#ff5a5a' },
-  { id: 'square', label: '矩形波', color: '#4dff8a' },
+  { id: 'sine', label: '正弦波' },
+  { id: 'triangle', label: '三角波' },
+  { id: 'sawtooth', label: 'のこぎり波' },
+  { id: 'square', label: '矩形波' },
 ];
 
 const MAX_PARTIALS = 64;

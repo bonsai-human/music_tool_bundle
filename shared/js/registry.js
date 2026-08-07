@@ -14,7 +14,7 @@ export const TOOLS = [
     description:
       'A1〜C7 の任意の音を鳴らす電子音叉。A4 = 415〜466Hz の較正、波形と高調波量、音圧レベルを調整できます。',
     path: 'tools/tuning-fork/',
-    accent: '#3ddc6b',
+    accent: '#35d6b5',
     status: 'ready',
     icon: `<svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor"
              stroke-width="4.5" stroke-linecap="round">

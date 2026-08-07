@@ -34,13 +34,7 @@
         </button>
       </header>
 
-      <p class="calibration-readout">
-        A4 = <span id="calibration-readout">440.0</span>Hz
-      </p>
-
       <button class="stage" id="toggle" type="button" aria-pressed="false">
-        <span class="stage__note" id="note-name" aria-hidden="true">A4</span>
-
         <span class="stage__fork" id="fork">
           <svg viewBox="0 0 120 300" fill="none" stroke="currentColor" aria-hidden="true">
             <g class="fork__prongs">
@@ -52,7 +46,14 @@
           </svg>
         </span>
 
-        <span class="stage__freq"><span id="frequency">440.0</span><small>Hz</small></span>
+        <span class="stage__readout">
+          <span class="stage__note" id="note-name" aria-hidden="true">A4</span>
+          <span class="stage__freq"><span id="frequency">440.0</span><small>Hz</small></span>
+          <span class="stage__calibration">
+            A4 = <span id="calibration-readout">440.0</span>Hz
+          </span>
+        </span>
+
         <span class="visually-hidden" id="toggle-label">音を鳴らす</span>
       </button>
 
