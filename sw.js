@@ -6,7 +6,7 @@
  * ツールを追加したら PRECACHE にファイルを足し、CACHE_VERSION を上げること。
  */
 
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = `music-tool-bundle-${CACHE_VERSION}`;
 
 const PRECACHE = [

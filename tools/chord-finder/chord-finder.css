@@ -7,14 +7,26 @@
   --key-ink: #16121f;
 }
 
+/* 鍵盤を画面下端に固定する。上の表示が伸び縮みしても鍵盤を動かさない */
+.shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
 /* ---------- 判定結果 ---------- */
 
 .result {
-  padding: 26px 2px 4px;
+  padding: 18px 2px 4px;
 }
 
+/*
+ * 選択の有無で文字量が変わっても鍵盤の位置がずれないよう、
+ * 可変になる箇所はあらかじめ高さを確保しておく。
+ */
 .result__name {
   margin: 0;
+  min-height: clamp(40px, 13.2vw, 68px);
   font-family: var(--font-num);
   font-size: clamp(38px, 12.5vw, 64px);
   font-weight: 300;
@@ -29,27 +41,42 @@
   color: var(--text-faint);
 }
 
+/* 文言が入れ替わっても高さが変わらないよう1行ぶんを確保する
+   （どの文言も 320px 幅で1行に収まる長さにしてある） */
 .result__note {
   margin: 8px 0 0;
+  min-height: 1.7em;
   font-size: 13px;
   color: var(--text-dim);
 }
 
 /* 構成音（度数つき） */
 
+/* 音数が増えても折り返して高さが変わらないよう、1行に固定して横スクロールさせる */
 .tones {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 6px;
-  margin: 16px 0 0;
+  height: 54px;
+  margin: 10px 0 0;
   padding: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
   list-style: none;
+  scrollbar-width: none;
+}
+
+.tones::-webkit-scrollbar,
+.alts__row::-webkit-scrollbar {
+  display: none;
 }
 
 .tone {
   display: grid;
+  align-content: center;
   justify-items: center;
   gap: 1px;
+  flex: none;
   min-width: 46px;
   padding: 5px 8px 6px;
   border: 1px solid var(--line);
@@ -76,8 +103,13 @@
 
 /* ---------- ほかの解釈 ---------- */
 
+/* 候補が無いときも場所だけ空けておく（鍵盤を動かさないため） */
 .alts {
-  margin-top: 16px;
+  margin-top: 12px;
+}
+
+.alts[data-visible='false'] {
+  visibility: hidden;
 }
 
 .alts__label {
@@ -86,13 +118,20 @@
   color: var(--text-faint);
 }
 
+/* 候補が0件でも高さを保つ（visibility だけでは中身が空で潰れてしまう） */
 .alts__row {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  flex-wrap: nowrap;
   gap: 6px;
+  height: 37px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
 }
 
 .alt {
+  flex: none;
   padding: 6px 12px;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -116,7 +155,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 20px 0 0;
+  margin: 18px 0 14px;
   padding-top: 16px;
   border-top: 1px solid var(--line);
 }
@@ -127,12 +166,14 @@
 
 /* ---------- 鍵盤 ---------- */
 
+/* margin-top: auto で下端に寄せる。画面が高いときは余白が上に集まる */
 .keyboard {
   position: relative;
   display: flex;
+  flex: none;
   gap: 2px;
   height: clamp(170px, 24dvh, 220px);
-  margin-top: 14px;
+  margin-top: auto;
   touch-action: manipulation;
 }
 
@@ -211,8 +252,10 @@
   outline-offset: -3px;
 }
 
+/* 文言の長さで鍵盤が動かないよう1行ぶん確保する */
 .hint {
-  margin: 14px 2px 0;
+  margin: 12px 2px 0;
+  min-height: 1.7em;
   font-size: 12px;
   line-height: 1.7;
   color: var(--text-faint);

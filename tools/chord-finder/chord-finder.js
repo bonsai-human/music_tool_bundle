@@ -123,8 +123,9 @@ function renderResult(pcs) {
     ui.chordName.textContent = '音を選んでください';
     ui.chordName.dataset.empty = 'true';
     ui.chordNote.textContent = '鍵盤を2つ以上タップします';
+    ui.hint.textContent = 'ベース音の指定で転回形も判定します';
     ui.tones.replaceChildren();
-    ui.altsSection.hidden = true;
+    ui.altsSection.dataset.visible = 'false';
     return;
   }
 
@@ -164,7 +165,7 @@ function renderResult(pcs) {
 
   // ほかの解釈
   const others = candidates.slice(0, 6);
-  ui.altsSection.hidden = others.length < 2;
+  ui.altsSection.dataset.visible = String(others.length >= 2);
   ui.alts.replaceChildren(
     ...others.map((alt, index) => {
       const button = document.createElement('button');
@@ -197,10 +198,11 @@ function renderKeys(pcs) {
     key.querySelector('.key__degree').textContent = on && tone ? tone.degree : '';
   }
 
+  // どちらも 320px 幅で1行に収まる長さにしている（高さが変わると鍵盤が動くため）
   ui.hint.textContent =
     pcs.length >= 3 && candidates.length >= 2
-      ? '同じ音でも複数の読み方があります。ベース音を決めると絞り込めます。'
-      : 'ベース音を指定すると転回形・分数コードとして判定します。';
+      ? '複数の読み方はベース音で絞り込めます'
+      : 'ベース音の指定で転回形も判定します';
 }
 
 function renderBassOptions(pcs) {
