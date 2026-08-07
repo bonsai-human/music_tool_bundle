@@ -1,0 +1,219 @@
+/* コード判定ツール固有のスタイル。音叉（青緑）・メトロノーム（琥珀）と分けて紫にする。 */
+
+:root {
+  --accent: #9d8bff;
+  --key-white: #eceef2;
+  --key-black: #191920;
+  --key-ink: #16121f;
+}
+
+/* ---------- 判定結果 ---------- */
+
+.result {
+  padding: 26px 2px 4px;
+}
+
+.result__name {
+  margin: 0;
+  font-family: var(--font-num);
+  font-size: clamp(38px, 12.5vw, 64px);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.result__name[data-empty='true'] {
+  font-size: clamp(19px, 5.6vw, 26px);
+  color: var(--text-faint);
+}
+
+.result__note {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* 構成音（度数つき） */
+
+.tones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tone {
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  min-width: 46px;
+  padding: 5px 8px 6px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--bg-elev);
+}
+
+.tone[data-bass='true'] {
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.tone__degree {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.tone__name {
+  font-family: var(--font-num);
+  font-size: 17px;
+  color: var(--text);
+}
+
+/* ---------- ほかの解釈 ---------- */
+
+.alts {
+  margin-top: 16px;
+}
+
+.alts__label {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.alts__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.alt {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-num);
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+
+.alt[aria-current='true'] {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--text);
+}
+
+/* ---------- 操作列 ---------- */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 20px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.actions__spacer {
+  flex: 1;
+}
+
+/* ---------- 鍵盤 ---------- */
+
+.keyboard {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  height: clamp(170px, 24dvh, 220px);
+  margin-top: 14px;
+  touch-action: manipulation;
+}
+
+.key {
+  position: relative;
+  display: grid;
+  align-content: end;
+  justify-items: center;
+  gap: 3px;
+  padding-bottom: 9px;
+  border: 0;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.key--white {
+  flex: 1;
+  min-width: 0;
+  border-radius: 3px 3px 9px 9px;
+  background: var(--key-white);
+  color: #4a4a55;
+}
+
+.key--black {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  width: calc(100% / 7 * 0.62);
+  height: 62%;
+  transform: translateX(-50%);
+  border-radius: 2px 2px 7px 7px;
+  background: var(--key-black);
+  color: var(--text-faint);
+  box-shadow: 0 2px 6px #000a;
+}
+
+.key[data-on='true'] {
+  background: var(--accent);
+  color: var(--key-ink);
+}
+
+.key--black[data-on='true'] {
+  background: color-mix(in srgb, var(--accent) 82%, #000);
+  color: var(--key-ink);
+}
+
+/* ベース音は下端の帯で示す */
+.key[data-bass='true']::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  width: 40%;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--key-ink);
+}
+
+.key__degree {
+  min-height: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.key__name {
+  font-family: var(--font-num);
+  font-size: clamp(10px, 3vw, 13px);
+}
+
+.key--black .key__name {
+  font-size: 10px;
+}
+
+.key:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.hint {
+  margin: 14px 2px 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-faint);
+}

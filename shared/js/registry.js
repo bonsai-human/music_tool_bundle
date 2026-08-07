@@ -39,6 +39,21 @@ export const TOOLS = [
            </svg>`,
   },
   {
+    id: 'chord-finder',
+    name: 'コード判定',
+    tagline: '音から和音名を出す',
+    description:
+      '鍵盤で選んだ音からコード名を判定します。複数の読み方がある和音は候補を並べ、ベース音を指定すると転回形・分数コードとして絞り込めます。',
+    path: 'tools/chord-finder/',
+    accent: '#9d8bff',
+    status: 'ready',
+    icon: `<svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor"
+             stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+             <rect x="6" y="10" width="36" height="28" rx="3"/>
+             <path d="M18 10v18M30 10v18M6 28h36"/>
+           </svg>`,
+  },
+  {
     id: 'tuner',
     name: 'チューナー',
     tagline: '音程を測る',

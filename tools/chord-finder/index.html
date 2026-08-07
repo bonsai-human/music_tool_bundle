@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>コード判定 | music tool bundle</title>
+    <meta name="description" content="鍵盤で選んだ音からコード名を判定します。" />
+    <meta name="theme-color" content="#0b0b0d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="../../manifest.webmanifest" />
+    <link rel="stylesheet" href="../../shared/css/base.css" />
+    <link rel="stylesheet" href="./chord-finder.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="icon-button" href="../../" aria-label="ツール一覧へ戻る">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 2 4 8l6 6" />
+          </svg>
+          ツール
+        </a>
+        <span class="topbar__spacer"></span>
+        <button class="icon-button" id="info-button" type="button" aria-label="使い方">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+               stroke-width="1.6" aria-hidden="true">
+            <circle cx="10" cy="10" r="8" />
+            <path d="M10 9v5" stroke-linecap="round" />
+            <circle cx="10" cy="6.2" r="0.9" fill="currentColor" stroke="none" />
+          </svg>
+        </button>
+      </header>
+
+      <section class="result" aria-live="polite">
+        <p class="result__name" id="chord-name">音を選んでください</p>
+        <p class="result__note" id="chord-note">鍵盤を2つ以上タップします</p>
+        <ul class="tones" id="tones"></ul>
+      </section>
+
+      <section class="alts" hidden id="alts-section">
+        <p class="alts__label">ほかの解釈</p>
+        <div class="alts__row" id="alts"></div>
+      </section>
+
+      <div class="actions">
+        <label class="field__label" for="bass">ベース音</label>
+        <select class="select" id="bass"></select>
+        <span class="actions__spacer"></span>
+        <button class="icon-button" id="clear" type="button">クリア</button>
+        <button class="icon-button icon-button--accent" id="play" type="button">鳴らす</button>
+      </div>
+
+      <div class="keyboard" id="keyboard"></div>
+
+      <p class="hint" id="hint">同じ音の集合に複数の名前がつくときは、ベース音を指定すると絞り込めます。</p>
+    </main>
+
+    <dialog id="info-dialog">
+      <h2>使い方</h2>
+      <ul>
+        <li>鍵盤をタップして音を選ぶと、その和音の名前を判定します。もう一度タップで解除。</li>
+        <li>選んだ音には、表示中のコードでの<strong>度数</strong>（R・3・5・♭7 など）が出ます。</li>
+        <li>同じ音の集合でも複数の読み方があります（C6 と Am7 は同じ音）。
+          「ほかの解釈」をタップすると、そちらの度数に切り替わります。</li>
+        <li><strong>ベース音</strong>を指定すると転回形や分数コード（C/E など）として判定します。</li>
+        <li><strong>鳴らす</strong>で和音を確認できます。</li>
+      </ul>
+      <h2>この画面について</h2>
+      <p>
+        コード名はオクターブの積み方では変わらず、「どの音名が含まれるか」と
+        「ベースが何か」だけで決まります。そこで鍵盤は1オクターブだけにして、
+        縦画面でも白鍵が指で押せる幅を確保しています。転回形はベース音の指定で表します。
+      </p>
+      <p>
+        完全に一致するコードが無いときは、5度を省いた形として解釈できるものを探します
+        （「5th省略」と表示）。
+      </p>
+      <button class="icon-button" id="info-close" type="button" autofocus>閉じる</button>
+    </dialog>
+
+    <script type="module" src="./chord-finder.js"></script>
+  </body>
+</html>
