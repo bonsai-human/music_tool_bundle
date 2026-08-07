@@ -27,10 +27,11 @@ export const TOOLS = [
     id: 'metronome',
     name: 'メトロノーム',
     tagline: 'テンポを刻む',
-    description: '拍子・テンポ・アクセントを設定できるメトロノーム。',
+    description:
+      '拍子12種と任意拍子、拍ごとのアクセント、リズムパターン、音色5種。目標テンポまで自動で上げていく練習プログラム付き。',
     path: 'tools/metronome/',
     accent: '#ffb84d',
-    status: 'planned',
+    status: 'ready',
     icon: `<svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor"
              stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round">
              <path d="M18 6h12l8 36H10z"/>
