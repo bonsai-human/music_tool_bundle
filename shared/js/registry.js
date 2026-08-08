@@ -57,10 +57,11 @@ export const TOOLS = [
     id: 'tuner',
     name: 'チューナー',
     tagline: '音程を測る',
-    description: 'マイク入力から音高を検出して、ずれをセント単位で表示します。',
+    description:
+      'マイクから音高を検出し、ずれをセント単位で表示します。楽器プリセット、音高の推移グラフ、音域の記録つき。',
     path: 'tools/tuner/',
     accent: '#5aa9ff',
-    status: 'planned',
+    status: 'ready',
     icon: `<svg viewBox="0 0 48 48" aria-hidden="true" fill="none" stroke="currentColor"
              stroke-width="4.5" stroke-linecap="round">
              <path d="M6 34a18 18 0 0 1 36 0"/>

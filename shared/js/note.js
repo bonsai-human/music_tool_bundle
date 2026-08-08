@@ -6,6 +6,16 @@
 export const SHARP_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 export const FLAT_NAMES = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
 
+/** 階名（ドレミ）。音名に馴染みがない場合の併記用。 */
+export const SOLFEGE_NAMES = [
+  'ド', 'ド♯', 'レ', 'レ♯', 'ミ', 'ファ', 'ファ♯', 'ソ', 'ソ♯', 'ラ', 'ラ♯', 'シ',
+];
+
+/** MIDIノート番号 → 階名。 */
+export function midiToSolfege(midi) {
+  return SOLFEGE_NAMES[((Math.round(midi) % 12) + 12) % 12];
+}
+
 /** MIDIノート番号 → 周波数(Hz)。a4 は A4 の基準周波数。 */
 export function midiToFreq(midi, a4 = 440) {
   return a4 * Math.pow(2, (midi - 69) / 12);

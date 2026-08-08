@@ -1,0 +1,327 @@
+/* チューナー固有のスタイル。他ツールと分けて青にする。 */
+
+:root {
+  --accent: #5aa9ff;
+  --off: #8b8b96;
+}
+
+.stack {
+  display: grid;
+  gap: 6px;
+}
+
+/* ---------- 読み取り部 ---------- */
+
+/* 検出のたびに文字が入れ替わるので、高さは全部固定して要素を動かさない */
+.readout {
+  padding: 14px 2px 6px;
+  text-align: center;
+}
+
+.readout__note {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  height: 78px;
+  margin: 0;
+  font-family: var(--font-num);
+  font-size: 64px;
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--off);
+  transition: color 0.15s;
+}
+
+.readout__solfege {
+  font-family: var(--font);
+  font-size: 20px;
+  color: var(--text-faint);
+}
+
+.readout[data-state='off'] .readout__note {
+  color: var(--text);
+}
+
+.readout[data-state='in-tune'] .readout__note {
+  color: var(--accent);
+}
+
+.readout__detail {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 14px;
+  height: 20px;
+  margin: 0;
+  font-family: var(--font-num);
+  font-size: 15px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.readout__detail small {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.readout__target {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* ---------- セントメーター ---------- */
+
+.meter {
+  margin-top: 14px;
+}
+
+/*
+ * ラベル・目盛り・針は同じ式 left: calc(50% + --at * 46%) で置く。
+ * 別々に配置すると、目盛りの数字と針の位置が食い違って読み違える。
+ */
+.meter__scale {
+  position: relative;
+  height: 13px;
+  font-family: var(--font-num);
+  font-size: 10px;
+  color: var(--text-faint);
+}
+
+.meter__scale span {
+  position: absolute;
+  left: calc(50% + var(--at) * 46%);
+  transform: translateX(-50%);
+}
+
+.meter__zero {
+  color: var(--text-dim);
+}
+
+.meter__tick {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: calc(50% + var(--at) * 46%);
+  width: 1px;
+  background: #ffffff1f;
+}
+
+.meter__track {
+  position: relative;
+  height: 30px;
+  margin-top: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #0f0f13;
+  overflow: hidden;
+}
+
+/* ±5セントの許容帯。針の座標系（±50¢ = ±46%）に合わせる */
+.meter__band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 4.6%);
+  width: 9.2%;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+}
+
+.meter__center {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 50%;
+  width: 1px;
+  background: #ffffff33;
+}
+
+/*
+ * --offset は -1〜1（±50セント）。transform の % は自分自身の幅が基準に
+ * なってしまうので、位置はトラック幅が基準になる left で決める。
+ */
+.meter__needle {
+  --offset: 0;
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: calc(50% + var(--offset) * 46%);
+  width: 4px;
+  border-radius: 999px;
+  background: var(--off);
+  transform: translateX(-50%);
+  transition: left 0.08s linear, background 0.15s;
+}
+
+.readout[data-state='in-tune'] .meter__needle {
+  background: var(--accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+.readout[data-state='off'] .meter__needle {
+  background: var(--text);
+}
+
+.meter__cents {
+  height: 22px;
+  margin: 6px 0 0;
+  font-family: var(--font-num);
+  font-size: 17px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.meter__cents small {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+
+.readout[data-state='in-tune'] .meter__cents {
+  color: var(--accent);
+}
+
+/* ---------- 操作 ---------- */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 12px;
+}
+
+.actions__status {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+
+/* ---------- グラフ ---------- */
+
+.graph {
+  display: block;
+  width: 100%;
+  height: clamp(140px, 22dvh, 190px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #0d0d11;
+}
+
+/* ---------- 楽器 ---------- */
+
+.panel {
+  margin-top: 12px;
+}
+
+.strings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.strings[data-empty='true'] {
+  display: none;
+}
+
+.string {
+  padding: 5px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--font-num);
+  font-size: 14px;
+  color: var(--text-faint);
+  transition: color 0.12s, border-color 0.12s, background 0.12s;
+}
+
+.string[data-active='true'] {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+}
+
+/* ---------- 音域 ---------- */
+
+.range summary,
+.panel > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.panel > summary::-webkit-details-marker {
+  display: none;
+}
+
+.panel > summary::after {
+  content: '▾';
+  margin-left: auto;
+  color: var(--text-faint);
+  transition: transform 0.15s;
+}
+
+.panel[open] > summary::after {
+  transform: rotate(180deg);
+}
+
+.range__chip {
+  padding: 2px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--font-num);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.range__hint {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.range__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.range__grid > div {
+  display: grid;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #0f0f13;
+}
+
+.range__label {
+  font-size: 10px;
+  color: var(--text-faint);
+}
+
+.range__value {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.panel .stack {
+  margin-top: 10px;
+}
+
+.hint {
+  margin: 14px 2px 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-faint);
+}
+
+.hint a {
+  color: var(--accent);
+}

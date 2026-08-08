@@ -6,7 +6,7 @@
  * ツールを追加したら PRECACHE にファイルを足し、CACHE_VERSION を上げること。
  */
 
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const CACHE_NAME = `music-tool-bundle-${CACHE_VERSION}`;
 
 const PRECACHE = [
@@ -21,6 +21,8 @@ const PRECACHE = [
   './shared/js/prefs.js',
   './shared/js/pwa.js',
   './shared/js/chords.js',
+  './shared/js/fft.js',
+  './shared/js/pitch.js',
   './shared/js/registry.js',
   './shared/js/scheduler.js',
   './shared/js/wave.js',
@@ -39,6 +41,12 @@ const PRECACHE = [
   './tools/chord-finder/chord-finder.css',
   './tools/chord-finder/chord-finder.js',
   './tools/chord-finder/voice.js',
+  './tools/tuner/',
+  './tools/tuner/index.html',
+  './tools/tuner/tuner.css',
+  './tools/tuner/tuner.js',
+  './tools/tuner/graph.js',
+  './tools/tuner/instruments.js',
 ];
 
 self.addEventListener('install', (event) => {

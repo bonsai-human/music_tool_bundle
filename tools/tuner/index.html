@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>チューナー | music tool bundle</title>
+    <meta name="description" content="マイクから音高を検出し、ずれをセント単位で表示するチューナー。" />
+    <meta name="theme-color" content="#0b0b0d" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="../../manifest.webmanifest" />
+    <link rel="stylesheet" href="../../shared/css/base.css" />
+    <link rel="stylesheet" href="./tuner.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="icon-button" href="../../" aria-label="ツール一覧へ戻る">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 2 4 8l6 6" />
+          </svg>
+          ツール
+        </a>
+        <span class="topbar__spacer"></span>
+        <button class="icon-button" id="info-button" type="button" aria-label="使い方">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+               stroke-width="1.6" aria-hidden="true">
+            <circle cx="10" cy="10" r="8" />
+            <path d="M10 9v5" stroke-linecap="round" />
+            <circle cx="10" cy="6.2" r="0.9" fill="currentColor" stroke="none" />
+          </svg>
+        </button>
+      </header>
+
+      <section class="readout" id="readout" data-state="idle" aria-live="off">
+        <p class="readout__note">
+          <span id="note">—</span><span class="readout__solfege" id="solfege"></span>
+        </p>
+        <p class="readout__detail">
+          <span id="freq">—</span><small> Hz</small>
+          <span class="readout__target" id="target"></span>
+        </p>
+
+        <div class="meter">
+          <!-- ラベル・目盛り・針はすべて同じ式で配置する（--at は -1〜1） -->
+          <div class="meter__scale">
+            <span style="--at: -1">−50</span>
+            <span style="--at: -0.5">−25</span>
+            <span class="meter__zero" style="--at: 0">0</span>
+            <span style="--at: 0.5">+25</span>
+            <span style="--at: 1">+50</span>
+          </div>
+          <div class="meter__track">
+            <div class="meter__band"></div>
+            <i class="meter__tick" style="--at: -1"></i>
+            <i class="meter__tick" style="--at: -0.5"></i>
+            <i class="meter__tick" style="--at: 0.5"></i>
+            <i class="meter__tick" style="--at: 1"></i>
+            <div class="meter__center"></div>
+            <div class="meter__needle" id="needle"></div>
+          </div>
+          <p class="meter__cents"><span id="cents">—</span><small> ¢</small></p>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button class="icon-button icon-button--accent" id="mic" type="button">マイクを開始</button>
+        <span class="actions__status" id="status">マイクの使用許可が必要です</span>
+      </div>
+
+      <canvas class="graph" id="graph" aria-label="音高の推移"></canvas>
+
+      <section class="panel" aria-label="楽器">
+        <div class="field">
+          <label class="field__label" for="instrument">楽器</label>
+          <select class="select" id="instrument"></select>
+        </div>
+        <div class="strings" id="strings"></div>
+      </section>
+
+      <details class="panel range">
+        <summary>音域の記録<span class="range__chip" id="range-chip">—</span></summary>
+        <div class="stack">
+          <p class="range__hint">安定して検出できた音の最低・最高を記録します。</p>
+          <div class="range__grid">
+            <div><span class="range__label">最低</span><span class="range__value" id="range-low">—</span></div>
+            <div><span class="range__label">最高</span><span class="range__value" id="range-high">—</span></div>
+            <div><span class="range__label">幅</span><span class="range__value" id="range-span">—</span></div>
+          </div>
+          <button class="icon-button" id="range-reset" type="button">記録をリセット</button>
+        </div>
+      </details>
+
+      <details class="panel">
+        <summary>設定</summary>
+        <div class="stack">
+          <div class="control control--stacked">
+            <span class="control__label control__label--small" id="label-a4">
+              A4 較正 <b id="a4-value">440.0Hz</b>
+            </span>
+            <input class="slider" id="a4" type="range" min="415" max="466" step="0.5" value="440"
+                   aria-labelledby="label-a4" />
+          </div>
+          <div class="control control--stacked">
+            <span class="control__label control__label--small" id="label-sensitivity">
+              マイク感度 <b id="sensitivity-value">70%</b>
+            </span>
+            <input class="slider" id="sensitivity" type="range" min="0" max="100" step="1" value="70"
+                   aria-labelledby="label-sensitivity" />
+          </div>
+          <div class="field">
+            <label class="field__label" for="naming">音名表記</label>
+            <select class="select" id="naming">
+              <option value="en">英語（A4）</option>
+              <option value="jp">英語＋階名（A4 ラ）</option>
+            </select>
+          </div>
+        </div>
+      </details>
+
+      <p class="hint" id="hint">
+        メトロノームと合わせて使う場合は<a href="../metronome/">メトロノーム</a>をどうぞ。
+      </p>
+    </main>
+
+    <dialog id="info-dialog">
+      <h2>使い方</h2>
+      <ul>
+        <li><strong>マイクを開始</strong>を押して許可すると、鳴っている音の高さを判定します。</li>
+        <li>中央の目盛りが0に近いほど合っています。<strong>±5セント以内</strong>で色が変わります。</li>
+        <li><strong>楽器</strong>を選ぶと、最寄りの開放弦に合わせて判定します。クロマチックなら最寄りの半音に合わせます。</li>
+        <li>下のグラフは音高の推移です。ビブラートや音程のふらつきが見えます。</li>
+        <li><strong>音域の記録</strong>は、安定して出せた最低音と最高音を残していきます。</li>
+      </ul>
+      <h2>精度について</h2>
+      <p>
+        FFT による自己相関から NSDF を求め、山を放物線で補間して音高を出しています。
+        合成音での検証では、E2〜D6 の全半音で誤差 0.14 セント以内でした。
+      </p>
+      <h2>うまく測れないとき</h2>
+      <ul>
+        <li>周りが騒がしいと拾えません。<strong>マイク感度</strong>を下げると雑音を無視しやすくなります。</li>
+        <li>マイクの許可はブラウザの設定から変更できます。</li>
+        <li>タブを離れるとマイクは自動的に止まります。</li>
+      </ul>
+      <button class="icon-button" id="info-close" type="button" autofocus>閉じる</button>
+    </dialog>
+
+    <script type="module" src="./tuner.js"></script>
+  </body>
+</html>
